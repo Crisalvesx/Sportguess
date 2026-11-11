@@ -1,0 +1,88 @@
+@include('partials/head')
+<div class="card card-body">
+  <h3 class="h5">Cadastrar atleta pela API</h3>
+  <form method="GET" action="/admin/atletas" class="d-flex gap-2">
+    <input class="form-control" name="busca" placeholder="Nome do atleta (ex.: Messi)" value="{{ busca }}">
+    <button class="btn btn-primary text-nowrap" type="submit">Buscar na API</button>
+  </form>
+
+  @if(apiError)
+    <div class="alert alert-danger mt-3 mb-0">{{ apiError }}</div>
+  @end
+
+  @if(busca && !apiError && results.length === 0)
+    <p class="text-secondary text-center mt-3 mb-0">Nenhum atleta encontrado para "{{ busca }}".</p>
+  @end
+
+  @each(r in results)
+    <form class="result" method="POST" action="/admin/atletas">
+      {{ csrfField() }}
+      <input type="hidden" name="externalId" value="{{ r.externalId }}">
+      <input type="hidden" name="name" value="{{ r.name }}">
+      <input type="hidden" name="photoUrl" value="{{ r.photoUrl }}">
+      @if(r.photoUrl)
+        <img src="{{ r.photoUrl }}" alt="" loading="lazy">
+      @else
+        <div class="noimg">?</div>
+      @end
+      <div class="flex-grow-1">
+        <strong>{{ r.name }}</strong>
+        <div class="text-secondary small">{{ r.team }}{{ r.sport ? ' · ' + r.sport : '' }}</div>
+      </div>
+      <select class="form-select w-auto" name="categoryId" required>
+        @each(c in categories)
+          <option value="{{ c.id }}">{{ c.name }}</option>
+        @end
+      </select>
+      <button class="btn btn-primary btn-sm" type="submit">Adicionar</button>
+    </form>
+  @end
+</div>
+
+<div class="card card-body mt-3">
+  <h3 class="h5">Cadastrar manualmente</h3>
+  <form method="POST" action="/admin/atletas" class="d-flex flex-wrap gap-2">
+    {{ csrfField() }}
+    <input class="form-control flex-grow-1 w-auto" name="name" placeholder="Nome do atleta" required>
+    <select class="form-select w-auto" name="categoryId" required>
+      @each(c in categories)
+        <option value="{{ c.id }}">{{ c.name }}</option>
+      @end
+    </select>
+    <button class="btn btn-primary" type="submit">Cadastrar</button>
+  </form>
+</div>
+
+<div class="card card-body mt-3">
+  <h3 class="h5">Atletas cadastrados</h3>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead><tr><th>Atleta</th><th>Categoria</th><th>Vídeos</th><th>Ações</th></tr></thead>
+      <tbody>
+        @each(a in athletes)
+          <tr>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                @if(a.photoUrl)
+                  <img class="avatar" src="{{ a.photoUrl }}" alt="" loading="lazy">
+                @end
+                {{ a.name }}
+              </div>
+            </td>
+            <td>{{ a.category.icon }} {{ a.category.name }}</td>
+            <td>{{ a.$extras.videos_count }}</td>
+            <td>
+              <form method="POST" action="/admin/atletas/{{ a.id }}/remover" class="m-0" onsubmit="return confirm('Remover este atleta?')">
+                {{ csrfField() }}
+                <button class="btn btn-outline-danger btn-sm" type="submit">Remover</button>
+              </form>
+            </td>
+          </tr>
+        @else
+          <tr><td colspan="4" class="text-center text-secondary py-4">Nenhum atleta cadastrado. Busque um na API acima.</td></tr>
+        @end
+      </tbody>
+    </table>
+  </div>
+</div>
+@include('partials/foot')

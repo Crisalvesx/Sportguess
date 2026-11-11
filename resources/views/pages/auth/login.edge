@@ -1,0 +1,14 @@
+@include('partials/head')
+<div class="card card-body mx-auto mt-4 narrow">
+  <h2 class="h4">Entrar</h2>
+  <form method="POST" action="/login">
+    {{ csrfField() }}
+    <label class="form-label" for="email">E-mail</label>
+    <input class="form-control" id="email" name="email" type="email" required value="{{ flashMessages.get('email', '') }}">
+    <label class="form-label mt-3" for="password">Senha</label>
+    <input class="form-control" id="password" name="password" type="password" required>
+    <button class="btn btn-primary w-100 mt-4" type="submit">Entrar</button>
+  </form>
+  <p class="text-secondary small mt-3 mb-0">Ainda não tem conta? <a href="/cadastro">Cadastre-se</a> ou <a href="/jogar">jogue como visitante</a>.</p>
+</div>
+@include('partials/foot')

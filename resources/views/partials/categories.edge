@@ -1,0 +1,11 @@
+<div class="row g-3">
+  @each(c in categories)
+    <div class="col-12 col-md-4">
+      <a class="cat {{ c.slug }}" href="/jogar/{{ c.slug }}">
+        <i>{{ c.icon }}</i>
+        <b>{{ c.name }}</b>
+        <span>{{ c.description }}</span>
+      </a>
+    </div>
+  @end
+</div>

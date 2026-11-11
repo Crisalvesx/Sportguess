@@ -1,0 +1,13 @@
+@include('partials/head')
+<section class="hero">
+  <h1>SPORT<b>GUESS</b></h1>
+  <h2 class="fs-3 mt-3">Não basta conhecer o esporte.<br>Conheça o <b>atleta.</b></h2>
+  <p class="text-body-secondary">Assista a vídeos borrados, adivinhe o atleta e suba no ranking.</p>
+  <a class="btn btn-primary btn-lg" href="/jogar">▶ Jogar agora</a>
+  @if(!currentUser)
+    <p class="text-secondary small mt-3 mb-0">Não precisa de conta para jogar. Cadastre-se só se quiser salvar sua pontuação.</p>
+  @end
+</section>
+<h3 class="sec">Categorias</h3>
+@include('partials/categories')
+@include('partials/foot')
