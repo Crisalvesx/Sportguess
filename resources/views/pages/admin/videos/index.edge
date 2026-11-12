@@ -1,0 +1,37 @@
+@include('partials/head')
+<div class="card card-body">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="h5 mb-0">Gerenciar vídeos</h3>
+    <a class="btn btn-primary btn-sm" href="/admin/videos/novo">+ Adicionar vídeo</a>
+  </div>
+  <form method="GET" action="/admin/videos" class="d-flex gap-2 mb-3">
+    <input class="form-control" name="busca" placeholder="Buscar por atleta..." value="{{ busca }}">
+    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+  </form>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead><tr><th>Vídeo</th><th>Atleta</th><th>Categoria</th><th>Ações</th></tr></thead>
+      <tbody>
+        @each(v in videos)
+          <tr>
+            <td><div class="thumb"><video src="{{ v.filePath }}" muted preload="metadata"></video></div></td>
+            <td>{{ v.athlete.name }}</td>
+            <td>{{ v.athlete.category.icon }} {{ v.athlete.category.name }}</td>
+            <td>
+              <div class="d-flex gap-2">
+                <a class="btn btn-outline-secondary btn-sm" href="/admin/videos/{{ v.id }}/editar">Editar</a>
+                <form method="POST" action="/admin/videos/{{ v.id }}/remover" class="m-0" onsubmit="return confirm('Remover este vídeo?')">
+                  {{ csrfField() }}
+                  <button class="btn btn-outline-danger btn-sm" type="submit">Remover</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        @else
+          <tr><td colspan="4" class="text-center text-secondary py-4">Nenhum vídeo encontrado. Cadastre o primeiro vídeo.</td></tr>
+        @end
+      </tbody>
+    </table>
+  </div>
+</div>
+@include('partials/foot')

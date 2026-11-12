@@ -1,0 +1,30 @@
+@include('partials/head')
+<div class="card card-body mx-auto narrow">
+  <h3 class="h5">{{ video ? 'Editar vídeo' : 'Novo vídeo' }}</h3>
+  <form method="POST" action="{{ video ? '/admin/videos/' + video.id : '/admin/videos' }}" enctype="multipart/form-data">
+    {{ csrfField() }}
+    <label class="form-label" for="athleteId">Atleta</label>
+    <select class="form-select" id="athleteId" name="athleteId" required>
+      <option value="">Selecione...</option>
+      @each(a in athletes)
+        <option value="{{ a.id }}" {{ video && video.athleteId === a.id ? 'selected' : '' }}>{{ a.name }} ({{ a.category.name }})</option>
+      @end
+    </select>
+    @if(athletes.length === 0)
+      <div class="form-text">Nenhum atleta cadastrado. <a href="/admin/atletas">Cadastre um atleta</a> primeiro.</div>
+    @end
+
+    <label class="form-label mt-3" for="video">Arquivo de vídeo (mp4 ou webm, até 30 MB){{ video ? ' — deixe vazio para manter o atual' : '' }}</label>
+    <input class="form-control" id="video" name="video" type="file" accept="video/mp4,video/webm" {{ video ? '' : 'required' }}>
+
+    @if(video)
+      <video class="preview" src="{{ video.filePath }}" controls muted></video>
+    @end
+
+    <div class="d-flex gap-2 mt-4">
+      <a class="btn btn-outline-secondary" href="/admin/videos">Cancelar</a>
+      <button class="btn btn-primary" type="submit">Salvar</button>
+    </div>
+  </form>
+</div>
+@include('partials/foot')

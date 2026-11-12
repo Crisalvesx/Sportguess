@@ -1,0 +1,29 @@
+@include('partials/head')
+<div class="card card-body">
+  <h3 class="h5 mb-0">{{ currentUser.fullName }}</h3>
+  <p class="text-secondary">{{ currentUser.email }}</p>
+  <div class="d-flex justify-content-between">
+    <span>⭐ Pontos totais: <b>{{ total }}</b></span>
+    <span>🎮 Partidas: <b>{{ count }}</b></span>
+  </div>
+
+  <h3 class="sec">Últimas partidas</h3>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead><tr><th>Categoria</th><th>Acertos</th><th>Pontos</th><th>Data</th></tr></thead>
+      <tbody>
+        @each(m in matches)
+          <tr>
+            <td>{{ m.category.icon }} {{ m.category.name }}</td>
+            <td>{{ m.correctCount }} / {{ m.rounds }}</td>
+            <td><b>{{ m.score }}</b></td>
+            <td>{{ m.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</td>
+          </tr>
+        @else
+          <tr><td colspan="4" class="text-center text-secondary py-4">Você ainda não jogou nenhuma partida.</td></tr>
+        @end
+      </tbody>
+    </table>
+  </div>
+</div>
+@include('partials/foot')

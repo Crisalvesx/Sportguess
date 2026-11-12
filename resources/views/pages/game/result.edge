@@ -1,0 +1,21 @@
+@include('partials/head')
+<div class="card card-body text-center mx-auto mt-4 narrow-lg">
+  <h2 class="h3">Fim de partida!</h2>
+  <p class="display-4 my-2">⭐ {{ score }} pts</p>
+  <p class="text-secondary">Você acertou {{ correct }} de {{ total }} atletas.</p>
+
+  @if(isPlayer)
+    <p class="text-secondary">Pontuação salva no seu perfil e no ranking.</p>
+  @else
+    <p class="text-secondary">Você jogou como visitante, então nada foi salvo. Cadastre-se para entrar no ranking e ter um perfil.</p>
+  @end
+
+  <div class="d-flex flex-wrap justify-content-center gap-2">
+    @if(!isPlayer)
+      <a class="btn btn-outline-secondary" href="/cadastro">Cadastrar-se</a>
+    @end
+    <a class="btn btn-primary" href="/jogar/{{ slug }}">Jogar de novo</a>
+    <a class="btn btn-outline-secondary" href="/jogar">Outra categoria</a>
+  </div>
+</div>
+@include('partials/foot')
